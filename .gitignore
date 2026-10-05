@@ -1,0 +1,13 @@
+# Microsoft Office temporary files
+~$*.xlsx
+~$*.xls
+~$*.docx
+~$*.pptx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local exports / scratch files
+*.tmp
+*.bak
