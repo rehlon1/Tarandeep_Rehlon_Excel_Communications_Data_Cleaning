@@ -2,11 +2,9 @@
 
 An end-to-end customer churn analysis built in **Microsoft Excel** using a fictional telecommunications scenario for **Horizon Communications**. The project covers data quality, cleaning, exploratory analysis, interactive dashboarding and business recommendations.
 
-The objective was to answer one question:
+The objective was to answer:
 
 > **What are the biggest drivers of customer churn, and which customer groups should Horizon prioritise for retention?**
-
-![Excel customer churn dashboard](assets/dashboard.png)
 
 ## Project summary
 
@@ -26,25 +24,25 @@ The analysis found that churn was **concentrated rather than evenly spread**. Co
 **Microsoft Excel** was used throughout the project, including:
 
 - Excel Tables and structured references
-- `TEXTBEFORE` and `TEXTAFTER` to split combined fields
-- Nested `IF` statements for standardisation and tenure banding
-- `XLOOKUP` to translate coded contract and payment values
-- `TRIM` and `VALUE` to clean and convert numeric fields
+- `TEXTBEFORE` and `TEXTAFTER`
+- Nested `IF` statements
+- `XLOOKUP`
+- `TRIM` and `VALUE`
 - Data-quality and duplicate checks
-- PivotTables and charts for exploratory analysis
+- PivotTables and charts
 - Slicers for interactive filtering
 - KPI cards and an interactive dashboard
-- Business-focused recommendations based on the analysis
+- Business-focused recommendations
+
+For examples of the formula logic, see [Formula Reference](documentation/formula-reference.md).
 
 ## Data preparation and quality checks
 
-The source data contained a number of quality issues that could have distorted the churn analysis. I created a separate pre-processing stage rather than editing the original data directly.
-
-Key cleaning steps included:
+The source data contained several issues that could have distorted the analysis, so I created a separate pre-processing stage rather than editing the original source directly.
 
 | Issue | Action |
 |---|---|
-| Customer ID and gender stored in one field | Split into separate Customer ID and Gender columns |
+| Customer ID and gender stored together | Split into separate Customer ID and Gender columns |
 | `Y`, `N`, `Yes` and `No` used inconsistently | Standardised to `Yes` / `No` |
 | `Fiber opticc` spelling error | Corrected to `Fiber optic` |
 | Online Security and Online Backup stored together | Split into separate service fields |
@@ -54,13 +52,13 @@ Key cleaning steps included:
 | Customer IDs | Checked for duplicates; none were found |
 | Tenure stored only as months | Created 0-12, 13-24, 25-48 and 49+ month bands |
 
-The invalid payment code was not silently corrected. **21 records** were retained as `Unknown`, making the limitation visible in the analysis.
+The invalid payment code was not silently corrected. **21 records** were retained as `Unknown`, keeping the limitation visible.
 
-For more detail, see [Data Quality Methodology](documentation/data-quality-methodology.md).
+See [Data Quality Methodology](documentation/data-quality-methodology.md) for the full cleaning approach.
 
 ## Workbook structure
 
-The Excel workbook keeps the workflow separated into clear stages:
+The original workbook was organised into clear stages:
 
 ```text
 Main_Data_Original
@@ -73,7 +71,7 @@ EDA
 Dashboard
 ```
 
-This makes the analysis easier to audit: the original data is preserved, transformations are visible, cleaned data is separated from the source, and reporting is kept apart from preparation.
+This separation preserves the source data, makes transformations traceable and keeps reporting separate from preparation. A sheet-by-sheet guide is available in [Workbook Guide](workbook/README.md).
 
 ## Key findings
 
@@ -84,21 +82,19 @@ This makes the analysis easier to audit: the original data is preserved, transfo
 - Churn falls sharply as tenure increases
 - Two-year customers show substantially lower churn than month-to-month customers
 
-![Contract and tenure analysis](assets/contract-and-tenure.png)
-
-**Action:** create an early-life retention journey and encourage suitable month-to-month customers to move to longer contracts.
+**Recommendation:** create an early-life retention journey and encourage suitable month-to-month customers to move to longer contracts.
 
 ### 2. Payment method highlights a retention opportunity
 
 Customers paying by **electronic check** had a **45.3% churn rate**, compared with approximately **15-17%** for automatic payment methods.
 
-**Action:** make automatic payment easier to adopt through onboarding prompts, support and appropriate incentives.
+**Recommendation:** make automatic payment easier to adopt through onboarding prompts, support and appropriate incentives.
 
 ### 3. Support and service add-ons are linked to churn
 
 Customers without Tech Support, Online Security or Online Backup had churn rates around 40%. Fibre optic customers also showed elevated churn at **41.9%**.
 
-**Action:** test bundles that combine fibre optic service with support, security and backup rather than treating these services only as optional extras.
+**Recommendation:** test bundles that combine fibre optic service with support, security and backup.
 
 ### 4. Multiple risk factors matter
 
@@ -113,9 +109,7 @@ Other elevated signals included:
 - No dependents: 31.3%
 - Gender showed little meaningful difference
 
-![High-risk customer segments](assets/high-risk-segments.png)
-
-The analysis therefore supports **targeted retention activity based on combinations of risk factors**, rather than one broad campaign for all customers.
+This supports **targeted retention activity based on combinations of risk factors**, rather than one broad campaign.
 
 ## Recommendations
 
@@ -125,26 +119,26 @@ The analysis therefore supports **targeted retention activity based on combinati
 4. **Service bundling** — test fibre optic packages bundled with support, security and backup.
 5. **Targeted campaigns** — prioritise customers with multiple churn risk factors first.
 
-A fuller breakdown is available in [Insights and Recommendations](documentation/insights-and-recommendations.md).
+See [Insights and Recommendations](documentation/insights-and-recommendations.md) for the detailed findings.
 
 ## Assumptions and limitations
 
-One validation check compared **Total Charges** with `tenure × monthly charge`. This was treated as an analytical assumption to be raised with the stakeholder rather than an unquestioned business rule, because real billing totals may contain adjustments that are not visible in the dataset.
+One validation check compared **Total Charges** with `tenure × monthly charge`. This was treated as an analytical assumption to be raised with the stakeholder rather than an unquestioned business rule, because real billing totals may contain adjustments not represented in the dataset.
 
-Payment method code `5` was also absent from the supplied lookup table. Those records were labelled `Unknown` rather than assigned to an unsupported category.
+Payment method code `5` was absent from the supplied lookup table. Those records were labelled `Unknown` rather than assigned to an unsupported category.
 
-These decisions were documented so that the analysis remains transparent and repeatable.
+## Repository contents
 
-## Project files
+- [Data Quality Methodology](documentation/data-quality-methodology.md)
+- [Insights and Recommendations](documentation/insights-and-recommendations.md)
+- [Formula Reference](documentation/formula-reference.md)
+- [Workbook Guide](workbook/README.md)
 
-- [Excel workbook](workbook/customer-churn-analysis.xlsx)
-- [Data quality and cleaning report - PDF](documentation/data-quality-cleaning-report.pdf)
-- [Data quality and cleaning report - Word](documentation/data-quality-cleaning-report.docx)
-- [Customer churn presentation - PDF](presentation/customer-churn-analysis-presentation.pdf)
+The full training workbook and presentation are retained separately rather than publishing the complete source dataset in this public repository.
 
 ## What this project demonstrates
 
-This project demonstrates my ability to take a raw dataset through the complete analysis process: **understand the business question, identify data-quality problems, clean and validate the data, explore patterns, build an accessible dashboard and translate findings into practical recommendations.**
+This project demonstrates my ability to take a raw dataset through the complete analysis process: **understand the business question, identify data-quality problems, clean and validate the data, explore patterns, build an interactive dashboard and translate findings into practical recommendations.**
 
 ---
 
